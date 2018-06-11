@@ -1,0 +1,13 @@
+{
+  "Database": {
+    "dbName": "wi_submit",
+    "user": "root",
+    "password": "qwertyui",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql"
+  },
+  "App": {
+    "port": 3331
+  }
+}
