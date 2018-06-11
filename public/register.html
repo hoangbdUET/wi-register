@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(to bottom, #278fc4 0%, #8968c1 100%);
+    }
+    .container {
+      min-width: 600px;
+      width: 50vw;
+      max-width: 1000px;
+      background: #ffffff;
+      padding: 3em;
+      box-shadow: 0px 0px 10px #333333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <form id="form">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" required>
+      </div>
+      <div class="form-group">
+        <label for="company">Company</label>
+        <input type="text" class="form-control" id="company" required>
+      </div>
+      <div class="form-group">
+        <label for="jobtitle">Job Title</label>
+        <input type="text" class="form-control" id="jobtitle" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" required>
+      </div>
+      <button id="submit" type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+  </div>
+  <script>
+    $('#form').submit((e) => {
+      e.preventDefault();
+      const data = {};
+      for (const input of e.target) {
+        if (input.id === 'submit') continue;
+        data[input.id] = input.value;
+      }
+      fetch('http://register.i2g.cloud/submit', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW5nIiwicGFzc3dvcmQiOiJjNGNhNDIzOGEwYjkyMzgyMGRjYzUwOWE2Zjc1ODQ5YiIsIndob2FtaSI6Im1haW4tc2VydmljZSIsImlhdCI6MTUyODY4Njk0NSwiZXhwIjoxNTI4ODU5NzQ1fQ.PoneuVH9rvMBeo7XnaDjXVczd8DOomeLCffzUXHfJyY'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(e => console.error(e));
+    });
+  </script>
+</body>
+
+</html>
