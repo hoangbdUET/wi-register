@@ -10,11 +10,6 @@ app.use(bodyParser.json());
 
 
 let userInfo = require('./api/submit/submit.router');
-
-app.get('/', function (req, res) {
-
-    res.send("wi-register");
-});
 app.use('/', userInfo);
 
 
