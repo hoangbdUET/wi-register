@@ -80,7 +80,7 @@
                 .then(data => {
                     console.log(data);
                     if (data.code === 200) {
-                        toastr.success("Successful create user ", data.content.firstName);
+                        toastr.success("Successful submit  user ", data.content.firstName);
                         e.target.reset();
                     } else {
                         // alert(data.content);

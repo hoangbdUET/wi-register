@@ -25,7 +25,8 @@ router.post('/submit', function (req, res) {
     }).then(user => {
         res.send(response(200, "Successfull", user));
     }).catch(err => {
-        res.send(response(512, "Error", err.errors[0].message));
+        console.log(err);
+        res.send(response(512, "Error", err.message));
     });
 });
 
