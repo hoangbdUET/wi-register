@@ -21,13 +21,14 @@ sequelize.sync()
         console.log(err);
     });
 let models = [
-    'UserInfo'
+    'UserInfo',
+    'UserCreated'
 ];
 models.forEach(function (model) {
     module.exports[model] = sequelize.import(__dirname + '/' + model);
 });
 
 (function (m) {
-
+    m.UserInfo.hasOne(m.UserCreated, { foreignKey: { name: 'idUserInfo', allowNull: false }, onDelete: 'CASCADE' });
 })(module.exports);
 module.exports.sequelize = sequelize;

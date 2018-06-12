@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Register List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+          crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to bottom, #278fc4 0%, #8968c1 100%);
+        }
+
+        #main {
+            width: 95vw;
+            background: #ffffff;
+            padding: 2em 5em;
+            box-shadow: 0px 0px 10px #333333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="modal fade" id="modal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-2-title">User Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p class="col-sm-4">Username</p>
+                    <p class="col-sm-8 font-weight-bold" id="created-username"></p>
+                </div>
+                <div class="row">
+                    <p class="col-sm-4">Password</p>
+                    <p class="col-sm-8 font-weight-bold" id="created-password"></p>
+                </div>
+                <div class="row">
+                    <p class="col-sm-4">Email</p>
+                    <p class="col-sm-8 font-weight-bold" id="created-email"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="user-form">
+                    <label for="service">Service</label>
+                    <div id="service" class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" id="sflow" autocomplete="off">sflow.me
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" id="i2g" autocomplete="off">i2g.cloud
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <select type="text" class="form-control" id="company" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" required
+                               placeholder="Leave blank to auto generate">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="create-user" data-dismiss="modal">Create User</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="main" class="container-fluid">
+</div>
+<script>
+    // let host = 'http://localhost:3331';
+
+    var host = 'http://register.i2g.cloud';
+    function getCompanyList(host) {
+        return new Promise((resolve, reject) => {
+            fetch(host + '/company/list', {
+                method: 'POST',
+                body: '',
+                headers: {
+                    'content-type': 'application/json',
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    resolve(data.content);
+                })
+                .catch(e => {
+                    console.error(e);
+                    reject(e);
+                });
+        })
+    }
+
+    function approve(id) {
+        fetch(host + '/approve', {
+            method: 'POST',
+            body: JSON.stringify({idUserInfo: id}),
+            headers: {
+                'content-type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                getList();
+                console.log('approved', data);
+            })
+            .catch(e => console.error(e));
+    }
+
+    function decline(id) {
+        fetch(host + '/decline', {
+            method: 'POST',
+            body: JSON.stringify({idUserInfo: id}),
+            headers: {
+                'content-type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                toastr.success("Successful deleted user ", data.username);
+                getList();
+                console.log('declined', data);
+            })
+            .catch(e => console.error(e));
+    }
+
+    let selectedId = null;
+    let listReg = [];
+
+    function getList() {
+        fetch(host + '/list', {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(list => {
+                console.log(list);
+                listReg = list;
+                const listElem = $('#main');
+                listElem.children().remove();
+                listElem.append('<hr>');
+                for (const reg of list) {
+                    let button;
+                    let buttonDelete;
+                    if (reg.status) {
+                        button = `<div class="col-sm-3 col-md-2">
+                          <button class="information btn btn-block btn-success" data-id="${reg.idUserInfo}" data-toggle="modal" data-target="#modal-2">
+                              ✔ Infomation
+                          </button>
+                        </div>`;
+                        buttonDelete = `<div class="col-sm-3 col-md-2">
+                        <button class="decline btn btn-block btn-danger" data-id="${reg.idUserInfo}">
+                        ❌ Delete
+                        </button>
+                    </div>`;
+                    } else {
+                        button = `<div class="col-sm-3 col-md-2">
+                          <button class="approve btn btn-block btn-success" data-id="${reg.idUserInfo}" data-toggle="modal" data-target="#modal">
+                              ☑ Approve
+                          </button>
+                        </div>`;
+                        buttonDelete = `<div class="col-sm-3 col-md-2">
+                        <button class="decline btn btn-block btn-danger" data-id="${reg.idUserInfo}">
+                        ✖ Decline
+                        </button>
+                    </div>`;
+                    }
+                    listElem.append(`
+                <div class="row">
+                    <p class="col-sm-6 col-md-4">${reg.firstName}</p>
+                    <p class="col-sm-6 col-md-4">${reg.lastName}</p>
+                    <p class="col-md-4">${reg.email}</p>
+                    <p class="col-sm-6 col-md-4">${reg.company}</p>
+                    <p class="col-sm-6 col-md-4">${reg.jobtitle}</p>
+                    <span class="col-sm-5 d-md-none"/>
+                    ${button}
+                    ${buttonDelete}
+                    </div>
+                <hr>
+            `)
+                }
+                $('#modal').on('shown.bs.modal', () => {
+                    let host = document.querySelector('#i2g').checked ? 'http://login.i2g.cloud' : 'http://login.sflow.me';
+                    showCompanyList(host);
+                });
+                $('.information').click(e => {
+                    selectedId = e.target.attributes['data-id'].value;
+                    console.log(selectedId);
+                    getUserInfo(selectedId).then(user => {
+                        console.log(user);
+                        let mailBody = "username: " + user.username + "       " + "password: " + user.password;
+                        setTimeout(function () {
+                            document.getElementById("created-username").innerHTML = user.username;
+                            document.getElementById("created-password").innerHTML = user.password;
+                            document.getElementById("created-email").innerHTML = user.email + "<a target='_blank' href='https://mail.google.com/mail/?view=cm&fs=1&su=[I2G] Account Login" +
+                                "&body=" + mailBody +
+                                "&to=" + user.email + "'>✉</a>";
+                        }, 300);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                });
+                $('.approve').click(async e => {
+                    selectedId = e.target.attributes['data-id'].value;
+                });
+                $('.decline').click(e => {
+                    const id = e.target.attributes['data-id'].value;
+                    decline(id);
+                });
+            })
+            .catch(e => console.error(e));
+    }
+
+    getList();
+
+    async function showCompanyList(host) {
+        try {
+            const companyList = await getCompanyList(host);
+            $('#company').children().remove();
+            for (const company of companyList) {
+                $('#company').append(`
+              <option value="${company.idCompany}">${company.name}</option>
+          `)
+            }
+        } catch (error) {
+            $('#company').children().remove();
+        }
+    }
+
+    $('#service').find('label').click(e => {
+        setTimeout(() => {
+            let host = document.querySelector('#i2g').checked ? 'http://login.i2g.cloud' : 'http://login.sflow.me';
+            // let host = 'http://localhost:2999';
+            showCompanyList(host);
+        }, 100);
+    })
+    $('#create-user').click(e => {
+        if (!selectedId) return;
+        const data = {};
+        data.username = document.querySelector('#username').value;
+        data.idCompany = document.querySelector('#company').value;
+        data.password = document.querySelector('#password').value;
+        data.service = document.querySelector('#i2g').checked ? 'i2g.cloud' : 'sflow.me';
+        Object.assign(data, listReg.find(r => r.idUserInfo == selectedId));
+        console.log(data);
+        fetch(host + '/create-user', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'content-type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.code === 200) {
+                    toastr.success("Successful created user ", data.username);
+                } else {
+                    toastr.error(data.reason);
+                }
+                getList();
+            })
+            .catch(e => console.error(e));
+        selectedId = null;
+    });
+
+    function getUserInfo(idUserInfo) {
+        return new Promise((resolve, reject) => {
+            fetch(host + '/info-user-created', {
+                method: 'POST',
+                body: JSON.stringify({idUserInfo: idUserInfo}),
+                headers: {
+                    'content-type': 'application/json',
+                }
+            }).then(res => res.json()).then(data => {
+                resolve(data.content);
+            }).catch(e => {
+                console.error(e);
+                reject(e);
+            });
+        })
+    }
+</script>
+</body>
+
+</html>

@@ -2,18 +2,16 @@
 <html>
 
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
-            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <style>
         body {
@@ -35,60 +33,62 @@
 </head>
 
 <body>
-<div class="container">
-    <form id="form">
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" required>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" required>
-        </div>
-        <div class="form-group">
-            <label for="company">Company</label>
-            <input type="text" class="form-control" id="company" required>
-        </div>
-        <div class="form-group">
-            <label for="jobtitle">Job Title</label>
-            <input type="text" class="form-control" id="jobtitle" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" required>
-        </div>
-        <button id="submit" type="submit" class="btn btn-primary btn-block">Submit</button>
-    </form>
-</div>
-<script>
-    $('#form').submit((e) => {
-        e.preventDefault();
-        const data = {};
-        for (const input of e.target) {
-            if (input.id === 'submit') continue;
-            data[input.id] = input.value;
-        }
-        fetch('http://register.i2g.cloud/submit', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW5nIiwicGFzc3dvcmQiOiJjNGNhNDIzOGEwYjkyMzgyMGRjYzUwOWE2Zjc1ODQ5YiIsIndob2FtaSI6Im1haW4tc2VydmljZSIsImlhdCI6MTUyODY4Njk0NSwiZXhwIjoxNTI4ODU5NzQ1fQ.PoneuVH9rvMBeo7XnaDjXVczd8DOomeLCffzUXHfJyY'
+    <div class="container">
+        <form id="form">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="company">Company</label>
+                <input type="text" class="form-control" id="company" required>
+            </div>
+            <div class="form-group">
+                <label for="jobtitle">Job Title</label>
+                <input type="text" class="form-control" id="jobtitle" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <button id="submit" type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
+    <script>
+        let host = 'http://register.i2g.cloud';
+        // let host = 'http://localhost:3331';
+        $('#form').submit((e) => {
+            e.preventDefault();
+            const data = {};
+            for (const input of e.target) {
+                if (input.id === 'submit') continue;
+                data[input.id] = input.value;
             }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data.code === 200) {
-                    toastr.success("Successful create user ", data.content.firstName);
-                    e.target.reset();
-                } else {
-                    // alert(data.content);
-                    toastr.error(data.content);
+            fetch(host + '/submit', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW5nIiwicGFzc3dvcmQiOiJjNGNhNDIzOGEwYjkyMzgyMGRjYzUwOWE2Zjc1ODQ5YiIsIndob2FtaSI6Im1haW4tc2VydmljZSIsImlhdCI6MTUyODY4Njk0NSwiZXhwIjoxNTI4ODU5NzQ1fQ.PoneuVH9rvMBeo7XnaDjXVczd8DOomeLCffzUXHfJyY'
                 }
-            }).catch(e => console.error(e));
-    });
-</script>
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.code === 200) {
+                        toastr.success("Successful create user ", data.content.firstName);
+                        e.target.reset();
+                    } else {
+                        // alert(data.content);
+                        toastr.error(data.content);
+                    }
+                }).catch(e => console.error(e));
+        });
+    </script>
 </body>
 
 </html>
