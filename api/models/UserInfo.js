@@ -31,6 +31,11 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: 0
-        }
+		},
+		phone: {
+			type: DataTypes.STRING(100),
+			allowNull: true,
+			defaultVaule: ""
+		}
     });
 };
