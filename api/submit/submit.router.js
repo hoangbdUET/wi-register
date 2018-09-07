@@ -26,6 +26,18 @@ router.post('/submit', function (req, res) {
         phone: req.body.phone
     }).then(user => {
         res.send(response(200, "Successfull", user));
+        sendMail({
+            toAddress: req.body.toAddress,
+            subject: 'I2G Support Team - Account Created',
+            text: 'I2G Support Team - Account Created',
+            html: '<p>Hi, we are hearing that you need to create new account on our service, please wait for approval. <hr/> --<br/> __ I2G Support Team __'
+        }, function (err, success) {
+            if (err) {
+                console.log("Send mail errr", err);
+            } else {
+                console.log("Send maul successful");
+            }
+        });
     }).catch(err => {
         console.log(err);
         res.send(response(512, "Error", err.message));
@@ -111,7 +123,7 @@ router.post('/info-user-created', function (req, res) {
     });
 });
 
-router.post('/send-mail', function (req, res) {
+function sendMail(data, callback) {
     let transporter = nodemailer.createTransport({ // config mail server
         host: 'smtp.yandex.com',
         port: 465,
@@ -123,18 +135,33 @@ router.post('/send-mail', function (req, res) {
     });
     let mainOptions = {
         from: 'support@i2g.cloud',
-        to: req.body.toAddress,
-        subject: 'I2G Support Team - Account Created',
-        text: 'I2G Support Team - Account Created',
-        html: '<p>Hi, this is your account infomation : </p><ul><li>Username: <b>' + req.body.username + '</b></li><li>Email: <b>' + req.body.toAddress + '</b></li><li>Password: <b>' + req.body.password + '</b></li></ul>Now you can use our services here: https://wi.i2g.cloud <hr/> --<br/> __ I2G Support Team __'
-    }
+        to: data.toAddress,
+        subject: data.subject,
+        text: data.text,
+        html: data.html
+    };
     transporter.sendMail(mainOptions, function (err, info) {
         if (err) {
             console.log(err);
-            res.send(response(512, "Got error", err));
+            callback(err, null);
         } else {
             console.log('Message sent: ' + info.response);
-            res.send(response(200, "Successful", info.response));
+            callback(null, info);
+        }
+    });
+}
+
+router.post('/send-mail', function (req, res) {
+    sendMail({
+        toAddress: req.body.toAddress,
+        subject: 'I2G Support Team - Account Created',
+        text: 'I2G Support Team - Account Created',
+        html: '<p>Hi, this is your account infomation : </p><ul><li>Username: <b>\' + req.body.username + \'</b></li><li>Email: <b>\' + req.body.toAddress + \'</b></li><li>Password: <b>\' + req.body.password + \'</b></li></ul>Now you can use our services here: https://wi.i2g.cloud <hr/> --<br/> __ I2G Support Team __'
+    }, function (err, success) {
+        if (err) {
+            res.send(response(512, "Got error", err));
+        } else {
+            res.send(response(200, "Successfull", success));
         }
     });
 });
