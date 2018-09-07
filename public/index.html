@@ -236,7 +236,7 @@
                             // document.getElementById("created-email").innerHTML = user.email + "<a target='_blank' href='https://mail.google.com/mail/?view=cm&fs=1&su=[I2G] Account Login" +
                             //     "&body=" + mailBody +
                             //     "&to=" + user.email + "'>✉</a>";
-                            document.getElementById("created-email").innerHTML = user.email + "<a>✉</a>";
+                            document.getElementById("created-email").innerHTML = user.email + "<a title='Click to send account info to this email!'>✉</a>";
                         }, 300);
                     }).catch(err => {
                         console.log(err);
