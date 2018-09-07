@@ -156,7 +156,7 @@ router.post('/send-mail', function (req, res) {
         toAddress: req.body.toAddress,
         subject: 'I2G Support Team - Account Created',
         text: 'I2G Support Team - Account Created',
-        html: '<p>Hi, this is your account infomation : </p><ul><li>Username: <b>\' + req.body.username + \'</b></li><li>Email: <b>\' + req.body.toAddress + \'</b></li><li>Password: <b>\' + req.body.password + \'</b></li></ul>Now you can use our services here: https://wi.i2g.cloud <hr/> --<br/> __ I2G Support Team __'
+        html: '<p>Hi, this is your account infomation : </p><ul><li>Username: <b>' + req.body.username + '</b></li><li>Email: <b>' + req.body.toAddress + '</b></li><li>Password: <b>' + req.body.password + '</b></li></ul>Now you can use our services here: https://wi.i2g.cloud <hr/> --<br/> __ I2G Support Team __'
     }, function (err, success) {
         if (err) {
             res.send(response(512, "Got error", err));
