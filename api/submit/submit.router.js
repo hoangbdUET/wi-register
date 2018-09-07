@@ -5,6 +5,7 @@ let UserInfo = require('../models').UserInfo;
 let UserCreated = require('../models').UserCreated;
 let path = require('path');
 let request = require('request');
+const nodemailer = require('nodemailer');
 
 function randomString() {
     let text = "";
@@ -21,8 +22,8 @@ router.post('/submit', function (req, res) {
         lastName: req.body.lastName,
         company: req.body.company,
         jobtitle: req.body.jobtitle,
-		email: req.body.email,
-		phone: req.body.phone
+        email: req.body.email,
+        phone: req.body.phone
     }).then(user => {
         res.send(response(200, "Successfull", user));
     }).catch(err => {
@@ -36,7 +37,7 @@ router.get('/list', function (req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/register-list.html'));
+    res.sendFile(path.join(__dirname, '../../public/index.html'));
 });
 
 router.post('/create-user', (req, res) => {
@@ -109,5 +110,34 @@ router.post('/info-user-created', function (req, res) {
         res.send(response(200, "Successfull", user.user_created));
     });
 });
+
+router.post('/send-mail', function (req, res) {
+    let transporter = nodemailer.createTransport({ // config mail server
+        host: 'smtp.yandex.com',
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: "support@i2g.cloud", // generated ethereal user
+            pass: "" // generated ethereal password
+        }
+    });
+    let mainOptions = {
+        from: 'support@i2g.cloud',
+        to: req.body.toAddress,
+        subject: 'I2G Support Team - Account Created',
+        text: 'I2G Support Team - Account Created',
+        html: '<p>Hi, this is your account infomation : </p><ul><li>Username: <b>' + req.body.username + '</b></li><li>Email: <b>' + req.body.toAddress + '</b></li><li>Password: <b>' + req.body.password + '</b></li></ul>Now you can use our services here: https://wi.i2g.cloud <hr/> --<br/> __ I2G Support Team __'
+    }
+    transporter.sendMail(mainOptions, function (err, info) {
+        if (err) {
+            console.log(err);
+            res.send(response(512, "Got error", err));
+        } else {
+            console.log('Message sent: ' + info.response);
+            res.send(response(200, "Successful", info.response));
+        }
+    });
+});
+
 
 module.exports = router;
