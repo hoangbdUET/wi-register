@@ -21,7 +21,8 @@ router.post('/submit', function (req, res) {
         lastName: req.body.lastName,
         company: req.body.company,
         jobtitle: req.body.jobtitle,
-        email: req.body.email
+		email: req.body.email,
+		phone: req.body.phone
     }).then(user => {
         res.send(response(200, "Successfull", user));
     }).catch(err => {
