@@ -75,15 +75,15 @@
             </div>
             <div class="modal-body">
                 <form id="user-form">
-                    <label for="service">Service</label>
-                    <div id="service" class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-primary active">
-                            <input type="radio" id="sflow" autocomplete="off">sflow.me
-                        </label>
-                        <label class="btn btn-primary">
-                            <input type="radio" id="i2g" autocomplete="off">i2g.cloud
-                        </label>
-                    </div>
+                    <!--<label for="service">Service</label>-->
+                    <!--<div id="service" class="btn-group btn-group-toggle" data-toggle="buttons">-->
+                    <!--<label class="btn btn-primary active">-->
+                    <!--<input type="radio" id="sflow" autocomplete="off">sflow.me-->
+                    <!--</label>-->
+                    <!--<label class="btn btn-primary">-->
+                    <!--<input type="radio" id="i2g" autocomplete="off">i2g.cloud-->
+                    <!--</label>-->
+                    <!--</div>-->
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" class="form-control" id="username" required>
@@ -221,7 +221,7 @@
             `)
                 }
                 $('#modal').on('shown.bs.modal', () => {
-                    let host = document.querySelector('#i2g').checked ? 'https://users.i2g.cloud' : 'https://admin.dev.i2g.cloud';
+                    let host = 'https://users.i2g.cloud';
                     showCompanyList(host);
                 });
                 $('.information').click(e => {
@@ -271,7 +271,7 @@
 
     $('#service').find('label').click(e => {
         setTimeout(() => {
-            let host = document.querySelector('#i2g').checked ? 'https://users.i2g.cloud' : 'https://admin.dev.i2g.cloud';
+            let host = 'https://users.i2g.cloud';
             // let host = 'http://localhost:2999';
             showCompanyList(host);
         }, 100);
@@ -305,7 +305,7 @@
         data.username = document.querySelector('#username').value;
         data.idCompany = document.querySelector('#company').value;
         data.password = document.querySelector('#password').value;
-        data.service = document.querySelector('#i2g').checked ? 'i2g.cloud' : 'sflow.me';
+        // data.service = document.querySelector('#i2g').checked ? 'i2g.cloud' : 'sflow.me';
         Object.assign(data, listReg.find(r => r.idUserInfo == selectedId));
         console.log(data);
         fetch(host + '/create-user', {
