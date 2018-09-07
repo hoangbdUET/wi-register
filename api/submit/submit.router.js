@@ -33,7 +33,7 @@ router.post('/submit', function (req, res) {
 });
 
 router.get('/list', function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/register-list.html'));
+    res.sendFile(path.join(__dirname, '../../public/index.html'));
 });
 
 router.get('/', function (req, res) {
