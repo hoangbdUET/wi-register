@@ -58,7 +58,9 @@ router.post('/create-user', (req, res) => {
             email: req.body.email,
             fullname: req.body.firstName + req.body.lastName
         },
-        json: true
+        json: true,
+        strictSSL: false
+
     };
     request(options, function (error, response, body) {
         if (error) {
