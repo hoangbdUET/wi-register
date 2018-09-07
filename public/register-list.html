@@ -111,7 +111,7 @@
 <script>
     // let host = 'http://localhost:3331';
 
-    var host = 'http://register.i2g.cloud';
+    var host = 'https://register.i2g.cloud';
     function getCompanyList(host) {
         return new Promise((resolve, reject) => {
             fetch(host + '/company/list', {
@@ -220,7 +220,7 @@
             `)
                 }
                 $('#modal').on('shown.bs.modal', () => {
-                    let host = document.querySelector('#i2g').checked ? 'http://login.i2g.cloud' : 'http://login.sflow.me';
+                    let host = document.querySelector('#i2g').checked ? 'https://users.i2g.cloud' : 'https://admin.dev.i2g.cloud';
                     showCompanyList(host);
                 });
                 $('.information').click(e => {
@@ -269,7 +269,7 @@
 
     $('#service').find('label').click(e => {
         setTimeout(() => {
-            let host = document.querySelector('#i2g').checked ? 'http://login.i2g.cloud' : 'http://login.sflow.me';
+            let host = document.querySelector('#i2g').checked ? 'https://users.i2g.cloud' : 'https://admin.dev.i2g.cloud';
             // let host = 'http://localhost:2999';
             showCompanyList(host);
         }, 100);

@@ -40,7 +40,7 @@ router.get('/', function (req, res) {
 
 router.post('/create-user', (req, res) => {
     // console.log(req.body);
-    let service = req.body.service === 'i2g.cloud' ? 'http://login.i2g.cloud' : 'http://login.sflow.me';
+    let service = req.body.service === 'i2g.cloud' ? 'https://users.i2g.cloud' : 'https://admin.dev.i2g.cloud';
     // service = 'http://localhost:2999';
     let password = req.body.password ? req.body.password : randomString();
     let options = {
