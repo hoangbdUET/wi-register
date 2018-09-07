@@ -28,8 +28,8 @@ router.post('/submit', function (req, res) {
         res.send(response(200, "Successfull", user));
         sendMail({
             toAddress: req.body.email,
-            subject: 'I2G Support Team - Account Created',
-            text: 'I2G Support Team - Account Created',
+            subject: 'I2G Support Team - Create account request',
+            text: 'I2G Support Team - Create account request',
             html: '<p>Hi, we are hearing that you need to create new account on our service, please wait for approval. <hr/> --<br/> __ I2G Support Team __'
         }, function (err, success) {
             if (err) {
