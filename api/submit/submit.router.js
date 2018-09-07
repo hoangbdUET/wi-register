@@ -36,7 +36,7 @@ router.get('/list', function (req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/index.html'));
+    res.sendFile(path.join(__dirname, '../../public/register-list.html'));
 });
 
 router.post('/create-user', (req, res) => {
