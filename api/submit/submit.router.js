@@ -15,8 +15,10 @@ function randomString() {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
-
-router.post('/submit', function (req, res) {
+router.get('/api', (req, res)=>{
+	res.send("Register API");
+});
+router.post('/api/submit', function (req, res) {
     UserInfo.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -44,7 +46,7 @@ router.post('/submit', function (req, res) {
     });
 });
 
-router.get('/list', function (req, res) {
+router.get('/api/list', function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/index.html'));
 });
 
@@ -52,7 +54,7 @@ router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/index.html'));
 });
 
-router.post('/create-user', (req, res) => {
+router.post('/api/create-user', (req, res) => {
     // console.log(req.body);
     let service = "https://users.i2g.cloud";
     // service = 'http://localhost:2999';
@@ -100,13 +102,13 @@ router.post('/create-user', (req, res) => {
     });
 });
 
-router.post('/list', function (req, res) {
+router.post('/api/list', function (req, res) {
     UserInfo.findAll().then(all => {
         res.send(all);
     });
 });
 
-router.post('/decline', function (req, res) {
+router.post('/api/decline', function (req, res) {
     UserInfo.findById(req.body.idUserInfo).then(userInfo => {
         userInfo.destroy().then(() => {
             res.send(response(200, "Successfull", userInfo));
@@ -115,7 +117,7 @@ router.post('/decline', function (req, res) {
         });
     });
 });
-router.post('/info-user-created', function (req, res) {
+router.post('/api/info-user-created', function (req, res) {
     UserInfo.findById(req.body.idUserInfo, {include: {model: UserCreated}}).then(user => {
         user = user.toJSON();
         user.user_created.email = user.email;
@@ -130,7 +132,7 @@ function sendMail(data, callback) {
         secure: true, // true for 465, false for other ports
         auth: {
             user: "support@i2g.cloud", // generated ethereal user
-            pass: "" // generated ethereal password
+            pass: "ntxxewzjzlbaatpb" // generated ethereal password
         }
     });
     let mainOptions = {
@@ -151,7 +153,7 @@ function sendMail(data, callback) {
     });
 }
 
-router.post('/send-mail', function (req, res) {
+router.post('/api/send-mail', function (req, res) {
     sendMail({
         toAddress: req.body.toAddress,
         subject: 'I2G Support Team - Account Created',
