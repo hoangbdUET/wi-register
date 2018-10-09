@@ -15,8 +15,9 @@ function randomString() {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
-router.get('/api', (req, res)=>{
-	res.send("Register API");
+
+router.get('/api', (req, res) => {
+    res.send("Register API");
 });
 router.post('/api/submit', function (req, res) {
     UserInfo.create({
@@ -121,7 +122,7 @@ router.post('/api/info-user-created', function (req, res) {
     UserInfo.findById(req.body.idUserInfo, {include: {model: UserCreated}}).then(user => {
         user = user.toJSON();
         user.user_created.email = user.email;
-        user.user_created.fullName = user.firstName + user.lastName;
+        user.user_created.fullName = user.firstName + " " + user.lastName;
         res.send(response(200, "Successfull", user.user_created));
     });
 });
@@ -159,7 +160,7 @@ router.post('/api/send-mail', function (req, res) {
         toAddress: req.body.toAddress,
         subject: 'Get started with I2G',
         text: 'Get started with I2G',
-        html: '<p>Dear <b>' + req.body.name + '</b></p></br> <p>Welcome to I2G, a cloud-based well-bore data management, interpretation platform.</p></br> <p>Your I2G account has just been activated!</p><br> <ul><li>Username: <b>' + req.body.username + ' </b></li>Password: <b>' + req.body.password + '</b><li></li></ul></br><p>Our support team will contact you shortly to guide you through all functionalities of our platform.</p></br><p>Best regards</p></br><p>The I2G team</p>'
+        html: '<p>Dear <b>' + req.body.name + '</b></p></br> <p>Welcome to I2G, a cloud-based well-bore data management, interpretation platform.</p></br> <p>Your I2G account has just been activated!</p><ul><li>Username: <b>' + req.body.username + ' </b></li><li>Password: <b>' + req.body.password + '</b></li></ul></br><p>Our support team will contact you shortly to guide you through all functionalities of our platform.</p></br><p>Best regards</p></br><p>The I2G team</p>'
     }, function (err, success) {
         if (err) {
             res.send(response(512, "Got error", err));
