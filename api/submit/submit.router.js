@@ -119,6 +119,7 @@ router.post('/info-user-created', function (req, res) {
     UserInfo.findById(req.body.idUserInfo, {include: {model: UserCreated}}).then(user => {
         user = user.toJSON();
         user.user_created.email = user.email;
+        user.user_created.fullName = user.firstName + user.lastName;
         res.send(response(200, "Successfull", user.user_created));
     });
 });
@@ -154,9 +155,9 @@ function sendMail(data, callback) {
 router.post('/send-mail', function (req, res) {
     sendMail({
         toAddress: req.body.toAddress,
-        subject: 'I2G Support Team - Account Created',
-        text: 'I2G Support Team - Account Created',
-        html: '<p>Hi, this is your account infomation : </p><ul><li>Username: <b>' + req.body.username + '</b></li><li>Email: <b>' + req.body.toAddress + '</b></li><li>Password: <b>' + req.body.password + '</b></li></ul>Now you can use our services here: https://wi.i2g.cloud <hr/> --<br/> __ I2G Support Team __'
+        subject: 'Get started with I2G',
+        text: 'Get started with I2G',
+        html: '<p>Dear <b>' + req.body.name + '</b></p></br> <p>Welcome to I2G, a cloud-based well-bore data management, interpretation platform.</p></br> <p>Your I2G account has just been activated!</p><br> <ul><li>Username: <b>' + req.body.username + ' </b></li>Password: <b>' + req.body.password + '</b><li></li></ul></br><p>Our support team will contact you shortly to guide you through all functionalities of our platform.</p></br><p>Best regards</p></br><p>The I2G team</p>'
     }, function (err, success) {
         if (err) {
             res.send(response(512, "Got error", err));
