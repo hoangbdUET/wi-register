@@ -160,7 +160,7 @@ router.post('/api/send-mail', function (req, res) {
         toAddress: req.body.toAddress,
         subject: 'Get started with I2G',
         text: 'Get started with I2G',
-        html: '<p>Dear <b>' + req.body.name + '</b></p></br> <p>Welcome to I2G, a cloud-based well-bore data management, interpretation platform.</p></br> <p>Your I2G account has just been activated!</p><ul><li>Username: <b>' + req.body.username + ' </b></li><li>Password: <b>' + req.body.password + '</b></li></ul></br><p>Our support team will contact you shortly to guide you through all functionalities of our platform.</p></br><p>Best regards</p></br><p>The I2G team</p>'
+        html: '<p>Dear <b>' + req.body.name + '</b></p></br> <p>Welcome to I2G, a cloud-based well-bore data management, interpretation platform.</p></br> <p>Your I2G account has just been activated!</p><ul><li>Username: <b>' + req.body.username + ' </b></li><li>Password: <b>' + req.body.password + '</b></li><li>URL: <b>https://wi.i2g.cloud</b></li></ul></br><p>Our support team will contact you shortly to guide you through all functionalities of our platform.</p></br><p>Best regards</p></br><p>The I2G team</p>'
     }, function (err, success) {
         if (err) {
             res.send(response(512, "Got error", err));
