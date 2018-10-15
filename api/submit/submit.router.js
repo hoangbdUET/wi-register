@@ -41,6 +41,14 @@ router.post('/api/submit', function (req, res) {
                 console.log("Send maul successful");
             }
         });
+        sendMail({
+            toAddress: "support@i2g.cloud",
+            subject: "New user submitted",
+            text: "New user submitted",
+            html: 'Konichiwa, Administrator! <br> New user already submited information to I2G, please approve this request at https://register.i2g.cloud <br> Best Regards <br> User Manager Service',
+        },function () {
+
+        })
     }).catch(err => {
         console.log(err);
         res.send(response(512, "Error", err.message));
@@ -128,30 +136,24 @@ router.post('/api/info-user-created', function (req, res) {
 });
 
 function sendMail(data, callback) {
-    let transporter = nodemailer.createTransport({ // config mail server
-        host: 'smtp.yandex.com',
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        auth: {
-            user: "support@i2g.cloud", // generated ethereal user
-            pass: "ntxxewzjzlbaatpb" // generated ethereal password
-        }
-    });
-    let mainOptions = {
-        from: 'support@i2g.cloud',
-        to: data.toAddress,
-        subject: data.subject,
-        text: data.text,
-        html: data.html
+    let options = {
+        method: 'POST',
+        url: 'http://127.0.0.1:3010/api/email/add',
+        headers:
+            {
+                'Content-Type': 'application/json'
+            },
+        body: {
+            toAddress: data.toAddress,
+            subject: data.subject,
+            text: data.text,
+            html: data.html
+        },
+        json: true,
+        strictSSL: false
     };
-    transporter.sendMail(mainOptions, function (err, info) {
-        if (err) {
-            console.log(err);
-            callback(err, null);
-        } else {
-            console.log('Message sent: ' + info.response);
-            callback(null, info);
-        }
+    request(options, function (error, response, body) {
+        callback(error);
     });
 }
 
