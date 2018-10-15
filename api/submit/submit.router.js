@@ -31,9 +31,9 @@ router.post('/api/submit', function (req, res) {
         res.send(response(200, "Successfull", user));
         sendMail({
             toAddress: req.body.email,
-            subject: 'I2G Support Team - Create account request',
-            text: 'I2G Support Team - Create account request',
-            html: '<p>Hi, we are hearing that you need to create new account on our service, please wait for approval. <hr/> --<br/> __ I2G Support Team __'
+            subject: 'Thank you for registering with i2G',
+            text: 'Thank you for registering with i2G',
+            html: '<p>Dear <b>' + req.body.firstName + ' ' + req.body.lastName + '</b></p></br> <p>Thank you for registering with i2G, a cloud-based well-bore data management, interpretation platform. Before you can be given access to the platform we need to verify your registration, which often takes up to 24 hours to process. An account activation email with username and password will be sent to you once this has been completed.</p></br><p>Best regards</p></br><p>The I2G team</p>'
         }, function (err, success) {
             if (err) {
                 console.log("Send mail errr", err);
@@ -160,7 +160,7 @@ router.post('/api/send-mail', function (req, res) {
         toAddress: req.body.toAddress,
         subject: 'Get started with I2G',
         text: 'Get started with I2G',
-        html: '<p>Dear <b>' + req.body.name + '</b></p></br> <p>Welcome to I2G, a cloud-based well-bore data management, interpretation platform.</p></br> <p>Your I2G account has just been activated!</p><ul><li>Username: <b>' + req.body.username + ' </b></li><li>Password: <b>' + req.body.password + '</b></li><li>URL: <b>https://wi.i2g.cloud</b></li></ul></br><p>Our support team will contact you shortly to guide you through all functionalities of our platform.</p></br><p>Best regards</p></br><p>The I2G team</p>'
+        html: '<p>Dear <b>' + req.body.name + '</b></p></br> <p>Welcome to I2G, a cloud-based well-bore data management, interpretation platform.</p></br> <p>Your I2G account has just been activated!</p><ul><li>Username: <b>' + req.body.username + ' </b></li><li>Password: <b>' + req.body.password + '</b></li><li>URL: <b>https://wi.i2g.cloud</b></li></ul></br><p>Our app works best with Chrome web browser, so please make sure you use Chrome to avoid unexpected errors.</p></br><p>You can change your password by clicking on the "account tab" at the app\'s layout top right corner</p></br><p>Our support team will contact you shortly to guide you through all functionalities of our platform.</p><br><p>Best regards</p></br><p>The I2G team</p>'
     }, function (err, success) {
         if (err) {
             res.send(response(512, "Got error", err));
