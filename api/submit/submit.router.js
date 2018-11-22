@@ -43,10 +43,10 @@ router.post('/api/submit', function (req, res) {
         });
         sendMail({
             toAddress: "support@i2g.cloud",
-            subject: "New user submitted",
-            text: "New user submitted",
-            html: 'Konichiwa, Administrator! <br> New user already submited information to I2G, please approve this request at https://register.i2g.cloud <br> Best Regards <br> User Manager Service',
-        },function () {
+            subject: "New user submitted " + req.body.firstName + " " + req.body.lastName,
+            text: "New user submitted" + req.body.firstName + " " + req.body.lastName,
+            html: 'Hi, Administrator! <br> New user ' + req.body.firstName + ' ' + req.body.lastName + ' already submited information to I2G, please approve this request at https://register.i2g.cloud <br> Best Regards <br> User Manager Service',
+        }, function () {
 
         })
     }).catch(err => {
