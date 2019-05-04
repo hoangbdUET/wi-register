@@ -175,6 +175,24 @@ router.post('/api/send-contact', (req, res) => {
 	});
 });
 
+router.post('/api/send-contact-revotech', (req, res) => {
+	/*
+	name, email, message
+	 */
+	sendMail({
+		toAddress: 'info@revotech.com.vn',
+		subject: 'Revotech new contact support - ' + req.body.name + ' | ' + req.body.email,
+		text: 'Revotech new contact support - ' + req.body.name + ' | ' + req.body.email,
+		html: '<p>From: <b>' + req.body.name + ' | ' + req.body.email + '</b></p></br><p>Message: <q>' + req.body.message + '</q></p>'
+	}, (err, success) => {
+		if (err) {
+			res.send(response(512, "Got error", err));
+		} else {
+			res.send(response(200, "Successfull", success));
+		}
+	});
+});
+
 router.post('/api/send-mail', function (req, res) {
 	sendMail({
 		toAddress: req.body.toAddress,
